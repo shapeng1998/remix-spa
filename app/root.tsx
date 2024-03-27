@@ -9,6 +9,9 @@ import {
 import type { LinksFunction } from '@remix-run/node';
 import stylesheet from '~/tailwind.css?url';
 
+import { Suspense } from 'react';
+import { Provider } from 'jotai';
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -28,7 +31,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <Suspense fallback="Loading...">
+      <Provider>
+        <Outlet />
+      </Provider>
+    </Suspense>
+  );
 }
 
 export function HydrateFallback() {
