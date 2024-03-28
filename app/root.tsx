@@ -11,6 +11,7 @@ import stylesheet from '~/tailwind.css?url';
 
 import { Suspense } from 'react';
 import { Provider } from 'jotai';
+import { NextUIProvider } from '@nextui-org/react';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,11 +33,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <Suspense fallback="Loading...">
-      <Provider>
-        <Outlet />
-      </Provider>
-    </Suspense>
+    <NextUIProvider>
+      <Suspense fallback="Loading...">
+        <Provider>
+          <Outlet />
+        </Provider>
+      </Suspense>
+    </NextUIProvider>
   );
 }
 

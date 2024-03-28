@@ -1,0 +1,204 @@
+{
+  "users": [
+    {
+      "id": "cfa85c1a-af26-473c-a1d1-39d34a62ec70",
+      "name": "Tony Reichert",
+      "role": "CEO",
+      "team": "Management",
+      "status": "active",
+      "age": "29",
+      "avatar": "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+      "email": "tony.reichert@example.com"
+    },
+    {
+      "id": "c5d870b3-b96f-42bb-b2d2-10284f33abf7",
+      "name": "Zoey Lang",
+      "role": "Tech Lead",
+      "team": "Development",
+      "status": "paused",
+      "age": "25",
+      "avatar": "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+      "email": "zoey.lang@example.com"
+    },
+    {
+      "id": "459c1384-5ebd-4d27-8343-62bbcd3e51d1",
+      "name": "Jane Fisher",
+      "role": "Sr. Dev",
+      "team": "Development",
+      "status": "active",
+      "age": "22",
+      "avatar": "https://i.pravatar.cc/150?u=a04258114e29026702d",
+      "email": "jane.fisher@example.com"
+    },
+    {
+      "id": "ffd9dddf-56d0-4d9c-a078-78b81381adac",
+      "name": "William Howard",
+      "role": "C.M.",
+      "team": "Marketing",
+      "status": "vacation",
+      "age": "28",
+      "avatar": "https://i.pravatar.cc/150?u=a048581f4e29026701d",
+      "email": "william.howard@example.com"
+    },
+    {
+      "id": "22d2ce22-6ed4-4cfc-8588-675abb44e1df",
+      "name": "Kristen Copper",
+      "role": "S. Manager",
+      "team": "Sales",
+      "status": "active",
+      "age": "24",
+      "avatar": "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
+      "email": "kristen.cooper@example.com"
+    },
+    {
+      "id": "0e8f61ec-81e8-41bf-961d-962223bb55f9",
+      "name": "Brian Kim",
+      "role": "P. Manager",
+      "team": "Management",
+      "age": "29",
+      "avatar": "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+      "email": "brian.kim@example.com",
+      "status": "active"
+    },
+    {
+      "id": "4f646786-5b48-49a7-b44b-db687a71a2c3",
+      "name": "Michael Hunt",
+      "role": "Designer",
+      "team": "Design",
+      "status": "paused",
+      "age": "27",
+      "avatar": "https://i.pravatar.cc/150?u=a042581f4e29027007d",
+      "email": "michael.hunt@example.com"
+    },
+    {
+      "id": "e780b158-76f1-41ea-840a-4e730bb96d01",
+      "name": "Samantha Brooks",
+      "role": "HR Manager",
+      "team": "HR",
+      "status": "active",
+      "age": "31",
+      "avatar": "https://i.pravatar.cc/150?u=a042581f4e27027008d",
+      "email": "samantha.brooks@example.com"
+    },
+    {
+      "id": "b010980d-aec4-410b-8a10-81c1b23436f1",
+      "name": "Frank Harrison",
+      "role": "F. Manager",
+      "team": "Finance",
+      "status": "vacation",
+      "age": "33",
+      "avatar": "https://i.pravatar.cc/150?img=4",
+      "email": "frank.harrison@example.com"
+    },
+    {
+      "id": "5897bb5e-c726-41b1-993f-016e53f58112",
+      "name": "Emma Adams",
+      "role": "Ops Manager",
+      "team": "Operations",
+      "status": "active",
+      "age": "35",
+      "avatar": "https://i.pravatar.cc/150?img=5",
+      "email": "emma.adams@example.com"
+    },
+    {
+      "id": "c77f158b-732b-4cce-bafc-03d5664e2dbe",
+      "name": "Brandon Stevens",
+      "role": "Jr. Dev",
+      "team": "Development",
+      "status": "active",
+      "age": "22",
+      "avatar": "https://i.pravatar.cc/150?img=8",
+      "email": "brandon.stevens@example.com"
+    },
+    {
+      "id": "37254a6a-e67d-4620-a769-62afd4840867",
+      "name": "Megan Richards",
+      "role": "P. Manager",
+      "team": "Product",
+      "status": "paused",
+      "age": "28",
+      "avatar": "https://i.pravatar.cc/150?img=10",
+      "email": "megan.richards@example.com"
+    },
+    {
+      "id": "3a682aed-7d2f-4f9f-99a5-c455c00b6586",
+      "name": "Oliver Scott",
+      "role": "S. Manager",
+      "team": "Security",
+      "status": "active",
+      "age": "37",
+      "avatar": "https://i.pravatar.cc/150?img=12",
+      "email": "oliver.scott@example.com"
+    },
+    {
+      "id": "7d8abf55-ffee-4c82-86bc-9ce40012bcda",
+      "name": "Grace Allen",
+      "role": "M. Specialist",
+      "team": "Marketing",
+      "status": "active",
+      "age": "30",
+      "avatar": "https://i.pravatar.cc/150?img=16",
+      "email": "grace.allen@example.com"
+    },
+    {
+      "id": "3f5a77f2-ca0f-4dcf-96fc-909e422ef672",
+      "name": "Noah Carter",
+      "role": "IT Specialist",
+      "team": "I. Technology",
+      "status": "paused",
+      "age": "31",
+      "avatar": "https://i.pravatar.cc/150?img=15",
+      "email": "noah.carter@example.com"
+    },
+    {
+      "id": "8d6a0b85-2a7b-4a0c-b34c-413e600fce24",
+      "name": "Ava Perez",
+      "role": "Manager",
+      "team": "Sales",
+      "status": "active",
+      "age": "29",
+      "avatar": "https://i.pravatar.cc/150?img=20",
+      "email": "ava.perez@example.com"
+    },
+    {
+      "id": "f3529b21-8c7f-4cd6-8375-56a6988a5f2e",
+      "name": "Liam Johnson",
+      "role": "Data Analyst",
+      "team": "Analysis",
+      "status": "active",
+      "age": "28",
+      "avatar": "https://i.pravatar.cc/150?img=33",
+      "email": "liam.johnson@example.com"
+    },
+    {
+      "id": "a8d8002a-206c-4593-86a8-da3f6555449b",
+      "name": "Sophia Taylor",
+      "role": "QA Analyst",
+      "team": "Testing",
+      "status": "active",
+      "age": "27",
+      "avatar": "https://i.pravatar.cc/150?img=29",
+      "email": "sophia.taylor@example.com"
+    },
+    {
+      "id": "f1b8e5c6-f5cd-4716-a05a-eb9cf791562a",
+      "name": "Lucas Harris",
+      "role": "Administrator",
+      "team": "Information Technology",
+      "status": "paused",
+      "age": "32",
+      "avatar": "https://i.pravatar.cc/150?img=50",
+      "email": "lucas.harris@example.com"
+    },
+    {
+      "id": "a836e0c6-861a-4377-a209-2c4e5f580790",
+      "name": "Mia Robinson",
+      "role": "Coordinator",
+      "team": "Operations",
+      "status": "active",
+      "age": "26",
+      "avatar": "https://i.pravatar.cc/150?img=45",
+      "email": "mia.robinson@example.com"
+    }
+  ]
+}
