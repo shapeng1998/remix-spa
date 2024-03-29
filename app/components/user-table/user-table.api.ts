@@ -1,33 +1,36 @@
-const BASE_URL = 'http://localhost:3000';
-
-type UserStatus = 'active' | 'paused' | 'vacation';
-
-interface User {
-  id: string;
-  name: string;
-  role: string;
-  team: string;
-  status: UserStatus;
-  age: string;
-  avatar: string;
-  email: string;
-}
+import invariant from 'tiny-invariant';
+import { BASE_URL, type User, type UserFilter } from './user-table.constants';
 
 /**
  * Get all users from api
  */
-export const getUsers = async () => {
-  // fetch user data
-  const res = await fetch(BASE_URL + '/users');
-  const users: User[] = await res.json();
+export const getUsers = async ({ name, status, limit, page }: UserFilter) => {
+  const searchParams = new URLSearchParams();
+  searchParams.set('_page', String(page));
+  searchParams.set('_limit', String(limit));
+  if (name) {
+    searchParams.set('name_like', name);
+  }
+  if (status) {
+    searchParams.set('status', status);
+  }
 
-  // preprocess user data
-  return users.map((user) => {
-    const age = user.age;
-    const ageNumber = Number(age);
-    return {
-      ...user,
-      age: Number.isFinite(ageNumber) ? ageNumber : -1,
-    };
-  });
+  const res = await fetch(BASE_URL + '/users?' + searchParams.toString());
+
+  const totalCount = res.headers.get('X-Total-Count');
+  invariant(
+    typeof totalCount === 'string',
+    'Expected totalCount to be a string',
+  );
+
+  const rawUsers: User[] = await res.json();
+  const users = rawUsers.map(({ age, ...others }) => ({
+    ...others,
+    age: Number(age),
+  }));
+
+  return {
+    users,
+    totalCount: Number(totalCount),
+  };
 };

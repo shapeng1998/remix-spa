@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto py-10">
       <UserTable />
     </div>
   );

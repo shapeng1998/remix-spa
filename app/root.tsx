@@ -44,7 +44,7 @@ export default function App() {
 }
 
 export function HydrateFallback() {
-  return <p>Loading...</p>;
+  return <p className="mt-10 text-center">Loading...</p>;
 }
 
 export const links: LinksFunction = () => [
