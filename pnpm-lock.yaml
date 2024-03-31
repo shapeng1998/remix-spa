@@ -20,6 +20,9 @@ dependencies:
   jotai:
     specifier: ^2.7.1
     version: 2.7.1(@types/react@18.2.73)(react@18.2.0)
+  jotai-effect:
+    specifier: ^0.6.0
+    version: 0.6.0(jotai@2.7.1)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -6191,6 +6194,14 @@ packages:
   /jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
     dev: true
+
+  /jotai-effect@0.6.0(jotai@2.7.1):
+    resolution: {integrity: sha512-PCewL5ThH3MXYI6+sQwvkk3o+gje4K1qw2YnyqjRVnZbIxqX3zHZv11JXqXosRkT8p3a51gd3pLv7+cBfyXz7A==}
+    peerDependencies:
+      jotai: '>=2.5.0'
+    dependencies:
+      jotai: 2.7.1(@types/react@18.2.73)(react@18.2.0)
+    dev: false
 
   /jotai@2.7.1(@types/react@18.2.73)(react@18.2.0):
     resolution: {integrity: sha512-bsaTPn02nFgWNP6cBtg/htZhCu4s0wxqoklRHePp6l/vlsypR9eLn7diRliwXYWMXDpPvW/LLA2afI8vwgFFaw==}

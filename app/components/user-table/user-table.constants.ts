@@ -29,6 +29,8 @@ export interface UserFilter {
   limit: number;
 }
 
+export const limits = [10, 20, 30, 60];
+
 export const columns: UserColumn[] = [
   {
     key: 'name',

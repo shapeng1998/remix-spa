@@ -1,8 +1,4 @@
 import {
-  Input,
-  Pagination,
-  Select,
-  SelectItem,
   Spinner,
   Table,
   TableBody,
@@ -12,18 +8,35 @@ import {
   TableRow,
   getKeyValue,
 } from '@nextui-org/react';
-import { useAtom, useAtomValue } from 'jotai';
-import { columns, userStatuses, type UserStatus } from './user-table.constants';
+import { Provider, useAtomValue } from 'jotai';
+import { useHydrateAtoms } from 'jotai/utils';
+import { Suspense, type FC } from 'react';
+import { columns, type UserFilter } from './user-table.constants';
 import {
-  defaultPage,
   filteredUsersAtom,
   loadingAtom,
-  totalCountAtom,
   userFilterAtom,
 } from './user-table.store';
+import { UserTableBottom } from './user-table.bottom';
+import { UserTableTop } from './user-table-top';
 
-// TODO: search based on location search string
-const UserTable = () => {
+type UserTableProps = Readonly<{
+  userFilter: UserFilter;
+}>;
+
+const UserTable: FC<UserTableProps> = ({ userFilter }) => {
+  return (
+    <Provider>
+      <Suspense fallback="Loading...">
+        <UserTableInner userFilter={userFilter} />
+      </Suspense>
+    </Provider>
+  );
+};
+
+const UserTableInner: FC<UserTableProps> = ({ userFilter }) => {
+  useHydrateAtoms([[userFilterAtom, userFilter]]);
+
   const users = useAtomValue(filteredUsersAtom);
   const loading = useAtomValue(loadingAtom);
 
@@ -51,65 +64,6 @@ const UserTable = () => {
         )}
       </TableBody>
     </Table>
-  );
-};
-
-const UserTableTop = () => {
-  const [{ name, status }, setUserFilter] = useAtom(userFilterAtom);
-
-  return (
-    <div className="flex flex-row gap-2 *:max-w-xs">
-      <Input
-        size="sm"
-        label="Name"
-        value={name}
-        onValueChange={(name) =>
-          setUserFilter((prev) => ({ ...prev, name, page: defaultPage }))
-        }
-      />
-      <Select
-        size="sm"
-        label="Status"
-        selectionMode="single"
-        selectedKeys={new Set([status as string])}
-        onSelectionChange={(keys) => {
-          const selectedStatus = Array.from(keys)[0] as UserStatus;
-          setUserFilter((prev) => ({
-            ...prev,
-            status: selectedStatus,
-            page: defaultPage,
-          }));
-        }}
-      >
-        {userStatuses.map((userStatus) => (
-          <SelectItem key={userStatus} value={userStatus}>
-            {userStatus}
-          </SelectItem>
-        ))}
-      </Select>
-    </div>
-  );
-};
-
-const UserTableBottom = () => {
-  const [{ page: currentPage, limit }, setUserFilter] = useAtom(userFilterAtom);
-
-  const totalCount = useAtomValue(totalCountAtom);
-  if (!totalCount) {
-    return null;
-  }
-
-  const totalPage = Math.ceil(totalCount / limit);
-  if (totalPage === 1) {
-    return null;
-  }
-
-  return (
-    <Pagination
-      total={Math.ceil(totalCount / limit)}
-      page={currentPage}
-      onChange={(page) => setUserFilter((prev) => ({ ...prev, page }))}
-    />
   );
 };
 

@@ -4,11 +4,12 @@ import { atom } from 'jotai';
 import type { UserFilter } from './user-table.constants';
 
 const defaultPage = 1;
-const defaultLimit = 20;
-const userFilterAtom = atom<UserFilter>({
+const defaultLimit = 10;
+const defaultUserFilter: UserFilter = {
   page: defaultPage,
   limit: defaultLimit,
-});
+};
+const userFilterAtom = atom<UserFilter>(defaultUserFilter);
 
 const usersDataAtom = atomWithRefresh(async (get) => {
   const filter = get(userFilterAtom);
@@ -23,10 +24,12 @@ const totalCountAtom = selectAtom(
   unwrappedUsersDataAtom,
   (usersData) => usersData?.totalCount,
 );
+
 const filteredUsersAtom = selectAtom(
   unwrappedUsersDataAtom,
   (usersData) => usersData?.users,
 );
+
 const loadingAtom = atom((get) => get(unwrappedUsersDataAtom) === undefined);
 
 export {
@@ -36,4 +39,5 @@ export {
   loadingAtom,
   defaultLimit,
   defaultPage,
+  defaultUserFilter,
 };
