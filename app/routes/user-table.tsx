@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSearchParams } from '@remix-run/react';
-import { UserTable } from '~/components/user-table';
+import { UserTable } from '~/components/user-table-effect';
 import {
   defaultPage,
   defaultLimit,
