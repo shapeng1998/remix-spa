@@ -1,6 +1,8 @@
 export const BASE_URL = 'http://localhost:3000';
 
-export type UserStatus = 'active' | 'paused' | 'vacation';
+export const userStatuses = ['active', 'paused', 'vacation'] as const;
+
+export type UserStatus = (typeof userStatuses)[number];
 
 export type UserColumn = {
   [K in keyof User]: {

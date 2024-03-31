@@ -24,10 +24,7 @@ export const getUsers = async ({ name, status, limit, page }: UserFilter) => {
   );
 
   const rawUsers: User[] = await res.json();
-  const users = rawUsers.map(({ age, ...others }) => ({
-    ...others,
-    age: Number(age),
-  }));
+  const users = rawUsers.map((user) => ({ ...user, age: Number(user.age) }));
 
   return {
     users,

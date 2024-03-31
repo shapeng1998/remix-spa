@@ -29,4 +29,11 @@ const filteredUsersAtom = selectAtom(
 );
 const loadingAtom = atom((get) => get(unwrappedUsersDataAtom) === undefined);
 
-export { totalCountAtom, filteredUsersAtom, userFilterAtom, loadingAtom };
+export {
+  totalCountAtom,
+  filteredUsersAtom,
+  userFilterAtom,
+  loadingAtom,
+  defaultLimit,
+  defaultPage,
+};
