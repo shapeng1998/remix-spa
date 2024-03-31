@@ -17,7 +17,7 @@ import {
   loadingAtom,
   userFilterAtom,
 } from './user-table.store';
-import { UserTableBottom } from './user-table.bottom';
+import { UserTableBottom } from './user-table-bottom';
 import { UserTableTop } from './user-table-top';
 
 type UserTableProps = Readonly<{
