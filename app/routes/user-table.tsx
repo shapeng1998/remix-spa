@@ -11,16 +11,20 @@ const UserTablePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    if (searchParams.has('page') && searchParams.has('limit')) {
+      return;
+    }
+
     setSearchParams((prev) => {
-      if (!prev.get('page')) {
+      if (!prev.has('page')) {
         prev.set('page', String(defaultPage));
       }
-      if (!prev.get('limit')) {
+      if (!prev.has('limit')) {
         prev.set('limit', String(defaultLimit));
       }
       return prev;
     });
-  }, [setSearchParams]);
+  }, [searchParams, setSearchParams]);
 
   return (
     <div className="container mx-auto py-10">

@@ -8,7 +8,6 @@ import {
   defaultPage,
 } from './user-table.store';
 
-// TODO: improve rendering performance
 const UserTableBottom = () => {
   const [, setSearchParams] = useSearchParams();
   const totalCount = useAtomValue(totalCountAtom);
