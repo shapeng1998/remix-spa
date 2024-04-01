@@ -17,9 +17,15 @@ import {
 
 const UserTableTop = () => {
   const [, setSearchParams] = useSearchParams();
-  const { name, status } = useAtomValue(userFilterAtom);
+  const userFilter = useAtomValue(userFilterAtom);
   const refreshUsersData = useSetAtom(usersDataAtom);
   const loading = useAtomValue(loadingAtom);
+
+  if (!userFilter) {
+    return null;
+  }
+
+  const { name, status } = userFilter;
 
   const handleInputValueChange = (name: string) => {
     setSearchParams(

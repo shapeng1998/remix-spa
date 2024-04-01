@@ -12,11 +12,13 @@ import { totalCountAtom, userFilterAtom } from './user-table.store';
 const UserTableBottom = () => {
   const [, setSearchParams] = useSearchParams();
   const totalCount = useAtomValue(totalCountAtom);
-  const { page: currentPage, limit } = useAtomValue(userFilterAtom);
+  const userFilter = useAtomValue(userFilterAtom);
 
-  if (!totalCount) {
+  if (!totalCount || !userFilter) {
     return null;
   }
+
+  const { page: currentPage, limit } = userFilter;
 
   const handlePaginationChange = (page: number) => {
     setSearchParams(

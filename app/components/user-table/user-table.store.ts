@@ -11,10 +11,13 @@ const defaultUserFilter: UserFilter = {
   name: undefined,
   status: undefined,
 };
-const userFilterAtom = atom<UserFilter>(defaultUserFilter);
+const userFilterAtom = atom<UserFilter | null>(null);
 
 const usersDataAtom = atomWithRefresh(async (get) => {
   const filter = get(userFilterAtom);
+  if (!filter) {
+    return;
+  }
   const res = await getUsers(filter);
   return res;
 });
