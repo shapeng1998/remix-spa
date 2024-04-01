@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSearchParams } from '@remix-run/react';
-import { UserTable } from '~/components/user-table-effect';
+import { UserTable } from '~/components/user-table';
 import {
   defaultPage,
   defaultLimit,
@@ -15,15 +15,18 @@ const UserTablePage = () => {
       return;
     }
 
-    setSearchParams((prev) => {
-      if (!prev.has('page')) {
-        prev.set('page', String(defaultPage));
-      }
-      if (!prev.has('limit')) {
-        prev.set('limit', String(defaultLimit));
-      }
-      return prev;
-    });
+    setSearchParams(
+      (prev) => {
+        if (!prev.has('page')) {
+          prev.set('page', String(defaultPage));
+        }
+        if (!prev.has('limit')) {
+          prev.set('limit', String(defaultLimit));
+        }
+        return prev;
+      },
+      { replace: true },
+    );
   }, [searchParams, setSearchParams]);
 
   return (

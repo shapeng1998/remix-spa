@@ -25,22 +25,28 @@ const UserTableTop = () => {
   const { name, status } = userFilter;
 
   const handleInputValueChange = (name: string) => {
-    setSearchParams((prev) => {
-      prev.set('page', String(defaultPage));
-      if (!name) prev.delete('name');
-      else prev.set('name', name);
-      return prev;
-    });
+    setSearchParams(
+      (prev) => {
+        prev.set('page', String(defaultPage));
+        if (!name) prev.delete('name');
+        else prev.set('name', name);
+        return prev;
+      },
+      { replace: true },
+    );
   };
 
   const handleSelectionChange = (keys: Selection) => {
     const selectedStatus = Array.from(keys)[0] as UserStatus | undefined;
-    setSearchParams((prev) => {
-      prev.set('page', String(defaultPage));
-      if (!selectedStatus) prev.delete('status');
-      else prev.set('status', selectedStatus);
-      return prev;
-    });
+    setSearchParams(
+      (prev) => {
+        prev.set('page', String(defaultPage));
+        if (!selectedStatus) prev.delete('status');
+        else prev.set('status', selectedStatus);
+        return prev;
+      },
+      { replace: true },
+    );
   };
 
   const handleButtonPress = async () => {
@@ -51,8 +57,8 @@ const UserTableTop = () => {
   };
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-row gap-2 *:max-w-36">
+    <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-row gap-2">
         <Input
           size="sm"
           label="Name"

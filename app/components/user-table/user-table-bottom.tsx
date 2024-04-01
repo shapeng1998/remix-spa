@@ -19,10 +19,13 @@ const UserTableBottom = () => {
   }
 
   const handlePaginationChange = (page: number) => {
-    setSearchParams((prev) => {
-      prev.set('page', String(page));
-      return prev;
-    });
+    setSearchParams(
+      (prev) => {
+        prev.set('page', String(page));
+        return prev;
+      },
+      { replace: true },
+    );
   };
 
   const handleSelectionChange = (keys: Selection) => {
@@ -31,10 +34,13 @@ const UserTableBottom = () => {
       return;
     }
 
-    setSearchParams((prev) => {
-      prev.set('limit', selectedLimit);
-      return prev;
-    });
+    setSearchParams(
+      (prev) => {
+        prev.set('limit', selectedLimit);
+        return prev;
+      },
+      { replace: true },
+    );
   };
 
   return (
