@@ -29,12 +29,10 @@ const UserTablePage = () => {
   return (
     <div className="container mx-auto py-10">
       <UserTable
-        userFilter={{
-          limit: Number(searchParams.get('limit') ?? defaultLimit),
-          page: Number(searchParams.get('page') ?? defaultPage),
-          name: searchParams.get('name') ?? undefined,
-          status: (searchParams.get('status') as UserStatus) ?? undefined,
-        }}
+        limit={Number(searchParams.get('limit') ?? defaultLimit)}
+        page={Number(searchParams.get('page') ?? defaultPage)}
+        name={searchParams.get('name') ?? undefined}
+        status={(searchParams.get('status') as UserStatus) ?? undefined}
       />
     </div>
   );

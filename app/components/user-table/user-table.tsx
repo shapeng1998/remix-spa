@@ -8,34 +8,35 @@ import {
   TableRow,
   getKeyValue,
 } from '@nextui-org/react';
-import { Provider, useAtomValue } from 'jotai';
-import { useHydrateAtoms } from 'jotai/utils';
-import { Suspense, type FC } from 'react';
+import { Provider, useAtomValue, useSetAtom } from 'jotai';
+import { Suspense, useEffect, type FC } from 'react';
+import { UserTableBottom } from './user-table-bottom';
+import { UserTableTop } from './user-table-top';
 import { columns, type UserFilter } from './user-table.constants';
 import {
   filteredUsersAtom,
   loadingAtom,
   userFilterAtom,
 } from './user-table.store';
-import { UserTableBottom } from './user-table-bottom';
-import { UserTableTop } from './user-table-top';
 
-type UserTableProps = Readonly<{
-  userFilter: UserFilter;
-}>;
+type UserTableProps = Readonly<UserFilter>;
 
-const UserTable: FC<UserTableProps> = ({ userFilter }) => {
+const UserTable: FC<UserTableProps> = (props) => {
   return (
     <Provider>
       <Suspense fallback="Loading...">
-        <UserTableInner userFilter={userFilter} />
+        <UserTableInner {...props} />
       </Suspense>
     </Provider>
   );
 };
 
-const UserTableInner: FC<UserTableProps> = ({ userFilter }) => {
-  useHydrateAtoms([[userFilterAtom, userFilter]]);
+const UserTableInner: FC<UserTableProps> = ({ page, limit, name, status }) => {
+  const setUserFilter = useSetAtom(userFilterAtom);
+
+  useEffect(() => {
+    setUserFilter({ page, limit, name, status });
+  }, [limit, name, page, status, setUserFilter]);
 
   const users = useAtomValue(filteredUsersAtom);
   const loading = useAtomValue(loadingAtom);

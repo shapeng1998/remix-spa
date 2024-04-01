@@ -6,23 +6,22 @@ import {
   type Selection,
 } from '@nextui-org/react';
 import { useSearchParams } from '@remix-run/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { type UserStatus, userStatuses } from './user-table.constants';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { userStatuses, type UserStatus } from './user-table.constants';
 import {
-  userFilterAtom,
   defaultPage,
-  usersDataAtom,
   loadingAtom,
+  userFilterAtom,
+  usersDataAtom,
 } from './user-table.store';
 
 const UserTableTop = () => {
   const [, setSearchParams] = useSearchParams();
-  const [{ name, status }, setUserFilter] = useAtom(userFilterAtom);
+  const { name, status } = useAtomValue(userFilterAtom);
   const refreshUsersData = useSetAtom(usersDataAtom);
   const loading = useAtomValue(loadingAtom);
 
   const handleInputValueChange = (name: string) => {
-    setUserFilter((prev) => ({ ...prev, name, page: defaultPage }));
     setSearchParams((prev) => {
       prev.set('page', String(defaultPage));
       if (!name) prev.delete('name');
@@ -33,12 +32,6 @@ const UserTableTop = () => {
 
   const handleSelectionChange = (keys: Selection) => {
     const selectedStatus = Array.from(keys)[0] as UserStatus | undefined;
-
-    setUserFilter((prev) => ({
-      ...prev,
-      status: selectedStatus,
-      page: defaultPage,
-    }));
     setSearchParams((prev) => {
       prev.set('page', String(defaultPage));
       if (!selectedStatus) prev.delete('status');

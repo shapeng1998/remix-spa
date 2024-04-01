@@ -8,6 +8,8 @@ const defaultLimit = 10;
 const defaultUserFilter: UserFilter = {
   page: defaultPage,
   limit: defaultLimit,
+  name: undefined,
+  status: undefined,
 };
 const userFilterAtom = atom<UserFilter>(defaultUserFilter);
 
@@ -17,8 +19,8 @@ const usersDataAtom = atomWithRefresh(async (get) => {
   return res;
 });
 
-// const unwrappedUsersDataAtom = unwrap(usersDataAtom, (prev) => prev);
-const unwrappedUsersDataAtom = unwrap(usersDataAtom);
+const unwrappedUsersDataAtom = unwrap(usersDataAtom, (prev) => prev);
+// const unwrappedUsersDataAtom = unwrap(usersDataAtom);
 
 const totalCountAtom = selectAtom(
   unwrappedUsersDataAtom,

@@ -5,25 +5,20 @@ import {
   type Selection,
 } from '@nextui-org/react';
 import { useSearchParams } from '@remix-run/react';
-import { useAtomValue, useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { limits } from './user-table.constants';
-import {
-  totalCountAtom,
-  userFilterAtom,
-  defaultPage,
-} from './user-table.store';
+import { totalCountAtom, userFilterAtom } from './user-table.store';
 
 const UserTableBottom = () => {
   const [, setSearchParams] = useSearchParams();
   const totalCount = useAtomValue(totalCountAtom);
-  const [{ page: currentPage, limit }, setUserFilter] = useAtom(userFilterAtom);
+  const { page: currentPage, limit } = useAtomValue(userFilterAtom);
 
   if (!totalCount) {
     return null;
   }
 
   const handlePaginationChange = (page: number) => {
-    setUserFilter((prev) => ({ ...prev, page }));
     setSearchParams((prev) => {
       prev.set('page', String(page));
       return prev;
@@ -36,11 +31,6 @@ const UserTableBottom = () => {
       return;
     }
 
-    setUserFilter((prev) => ({
-      ...prev,
-      limit: Number(selectedLimit),
-      page: defaultPage,
-    }));
     setSearchParams((prev) => {
       prev.set('limit', selectedLimit);
       return prev;

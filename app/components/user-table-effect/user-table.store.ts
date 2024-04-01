@@ -9,6 +9,8 @@ const defaultLimit = 10;
 const defaultUserFilter: UserFilter = {
   page: defaultPage,
   limit: defaultLimit,
+  name: undefined,
+  status: undefined,
 };
 const userFilterAtom = atom<UserFilter>(defaultUserFilter);
 
