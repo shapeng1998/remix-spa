@@ -51,4 +51,5 @@ export {
   loadingAtom,
   totalCountAtom,
   userFilterAtom,
+  usersDataAtom,
 };

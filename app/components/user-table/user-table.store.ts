@@ -40,4 +40,5 @@ export {
   defaultLimit,
   defaultPage,
   defaultUserFilter,
+  usersDataAtom,
 };
