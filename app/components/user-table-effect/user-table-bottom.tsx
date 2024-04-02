@@ -6,7 +6,7 @@ import {
 } from '@nextui-org/react';
 import { useSearchParams } from '@remix-run/react';
 import { useAtomValue } from 'jotai';
-import { limits } from './user-table.constants';
+import { defaultPage, limits } from './user-table.constants';
 import { totalCountAtom, userFilterAtom } from './user-table.store';
 
 const UserTableBottom = () => {
@@ -39,6 +39,7 @@ const UserTableBottom = () => {
     setSearchParams(
       (prev) => {
         prev.set('limit', selectedLimit);
+        prev.set('page', String(defaultPage));
         return prev;
       },
       { replace: true },

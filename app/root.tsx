@@ -4,6 +4,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigate,
 } from '@remix-run/react';
 
 import type { LinksFunction } from '@remix-run/node';
@@ -32,13 +33,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+
   return (
-    <NextUIProvider>
-      <Suspense fallback="Loading...">
-        <Provider>
+    <NextUIProvider navigate={navigate}>
+      <Provider>
+        <Suspense fallback="Loading...">
           <Outlet />
-        </Provider>
-      </Suspense>
+        </Suspense>
+      </Provider>
     </NextUIProvider>
   );
 }
