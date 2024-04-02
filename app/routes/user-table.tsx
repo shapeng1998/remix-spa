@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useSearchParams } from '@remix-run/react';
 import { UserTable } from '~/components/user-table';
 import {
-  defaultPage,
   defaultLimit,
-} from '~/components/user-table/user-table.store';
-import type { UserStatus } from '~/components/user-table/user-table.constants';
+  defaultPage,
+  type UserStatus,
+} from '~/components/user-table/user-table.constants';
 
 const UserTablePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

@@ -7,13 +7,12 @@ import {
 } from '@nextui-org/react';
 import { useSearchParams } from '@remix-run/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { type UserStatus, userStatuses } from './user-table.constants';
 import {
-  userFilterAtom,
+  type UserStatus,
+  userStatuses,
   defaultPage,
-  usersDataAtom,
-  loadingAtom,
-} from './user-table.store';
+} from './user-table.constants';
+import { userFilterAtom, usersDataAtom, loadingAtom } from './user-table.store';
 import { getUsers } from './user-table.api';
 
 const UserTableTop = () => {
@@ -21,6 +20,10 @@ const UserTableTop = () => {
   const userFilter = useAtomValue(userFilterAtom);
   const [loading, setLoading] = useAtom(loadingAtom);
   const setUsersData = useSetAtom(usersDataAtom);
+
+  if (!userFilter) {
+    return null;
+  }
 
   const { name, status } = userFilter;
 

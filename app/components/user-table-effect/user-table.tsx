@@ -37,6 +37,7 @@ const UserTableInner: FC<UserTableProps> = ({ limit, page, name, status }) => {
 
   useEffect(() => {
     setUserFilter({ limit, page, name, status });
+    return () => setUserFilter(null);
   }, [limit, name, page, status, setUserFilter]);
 
   useAtomValue(initUsersDataEffectAtom);

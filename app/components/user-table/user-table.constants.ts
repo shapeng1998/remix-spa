@@ -1,5 +1,8 @@
 export const BASE_URL = 'http://localhost:3000';
 
+export const defaultPage = 1;
+export const defaultLimit = 10;
+
 export const userStatuses = ['active', 'paused', 'vacation'] as const;
 
 export type UserStatus = (typeof userStatuses)[number];

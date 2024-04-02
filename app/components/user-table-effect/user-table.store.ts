@@ -4,15 +4,7 @@ import { selectAtom } from 'jotai/utils';
 import { getUsers } from './user-table.api';
 import type { UserFilter } from './user-table.constants';
 
-const defaultPage = 1;
-const defaultLimit = 10;
-const defaultUserFilter: UserFilter = {
-  page: defaultPage,
-  limit: defaultLimit,
-  name: undefined,
-  status: undefined,
-};
-const userFilterAtom = atom<UserFilter>(defaultUserFilter);
+const userFilterAtom = atom<UserFilter | null>(null);
 
 const loadingAtom = atom(false);
 
@@ -22,9 +14,13 @@ const usersDataAtom = atom<Awaited<ReturnType<typeof getUsers>> | undefined>(
 
 const initUsersDataEffectAtom = atomEffect((get, set) => {
   const initUsersData = async () => {
+    const filter = get(userFilterAtom);
+    if (!filter) {
+      return;
+    }
+
     set(loadingAtom, true);
 
-    const filter = get(userFilterAtom);
     const res = await getUsers(filter);
 
     set(loadingAtom, false);
@@ -45,9 +41,6 @@ const filteredUsersAtom = selectAtom(
 );
 
 export {
-  defaultLimit,
-  defaultPage,
-  defaultUserFilter,
   filteredUsersAtom,
   initUsersDataEffectAtom,
   loadingAtom,

@@ -3,14 +3,6 @@ import { getUsers } from './user-table.api';
 import { atom } from 'jotai';
 import type { UserFilter } from './user-table.constants';
 
-const defaultPage = 1;
-const defaultLimit = 10;
-const defaultUserFilter: UserFilter = {
-  page: defaultPage,
-  limit: defaultLimit,
-  name: undefined,
-  status: undefined,
-};
 const userFilterAtom = atom<UserFilter | null>(null);
 
 const usersDataAtom = atomWithRefresh(async (get) => {
@@ -42,8 +34,5 @@ export {
   filteredUsersAtom,
   userFilterAtom,
   loadingAtom,
-  defaultLimit,
-  defaultPage,
-  defaultUserFilter,
   usersDataAtom,
 };
