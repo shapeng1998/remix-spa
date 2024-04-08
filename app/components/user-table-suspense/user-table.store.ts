@@ -1,38 +1,55 @@
-import { atomWithRefresh, selectAtom, unwrap } from 'jotai/utils';
-import { getUsers } from './user-table.api';
 import { atom } from 'jotai';
-import type { UserFilter } from './user-table.constants';
+import { getUsers } from './user-table.api';
+import {
+  defaultLimit,
+  defaultPage,
+  type UserFilter,
+  type UserStatus,
+} from './user-table.constants';
 
-const userFilterAtom = atom<UserFilter | null>(null);
+export const nameAtom = atom<string | undefined>(undefined);
+export const statusAtom = atom<UserStatus | undefined>(undefined);
+export const pageAtom = atom(defaultPage);
+export const limitAtom = atom(defaultLimit);
 
-const usersDataAtom = atomWithRefresh(async (get) => {
-  const filter = get(userFilterAtom);
-  if (!filter) {
-    return;
+type Users = Awaited<ReturnType<typeof getUsers>>;
+
+const updatedUsersDataAtom = atom<Promise<Users> | null>(null);
+
+const usersDataAtom = atom(async (get) => {
+  // get updated data
+  const updatedUsersData = await get(updatedUsersDataAtom);
+  if (updatedUsersData) {
+    return updatedUsersData;
   }
-  const res = await getUsers(filter);
-  return res;
+
+  // get initial data
+  return getUsers({ page: defaultPage, limit: defaultLimit });
 });
 
-const unwrappedUsersDataAtom = unwrap(usersDataAtom, (prev) => prev);
-// const unwrappedUsersDataAtom = unwrap(usersDataAtom);
+export const totalCountAtom = atom(async (get) => {
+  const { totalCount } = await get(usersDataAtom);
+  return totalCount;
+});
 
-const totalCountAtom = selectAtom(
-  unwrappedUsersDataAtom,
-  (usersData) => usersData?.totalCount,
+export const filteredUsersAtom = atom(async (get) => {
+  const { users } = await get(usersDataAtom);
+  return users;
+});
+
+export const updateUsersDataAtom = atom(
+  null,
+  (get, set, userFilter?: Partial<UserFilter>) => {
+    const defaultUserFilter: UserFilter = {
+      page: get(pageAtom),
+      limit: get(limitAtom),
+      name: get(nameAtom),
+      status: get(statusAtom),
+    };
+    const usersDataPromise = getUsers({
+      ...defaultUserFilter,
+      ...userFilter,
+    });
+    set(updatedUsersDataAtom, usersDataPromise);
+  },
 );
-
-const filteredUsersAtom = selectAtom(
-  unwrappedUsersDataAtom,
-  (usersData) => usersData?.users,
-);
-
-const loadingAtom = atom((get) => get(unwrappedUsersDataAtom) === undefined);
-
-export {
-  totalCountAtom,
-  filteredUsersAtom,
-  userFilterAtom,
-  loadingAtom,
-  usersDataAtom,
-};

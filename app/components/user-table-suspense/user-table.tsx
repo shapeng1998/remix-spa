@@ -9,16 +9,16 @@ import {
   getKeyValue,
 } from '@nextui-org/react';
 import { Provider, useAtomValue } from 'jotai';
-import { Suspense } from 'react';
+import { Suspense, useTransition } from 'react';
 import { UserTableBottom } from './user-table-bottom';
 import { UserTableTop } from './user-table-top';
 import { columns } from './user-table.constants';
-import { filteredUsersAtom, loadingAtom } from './user-table.store';
+import { filteredUsersAtom } from './user-table.store';
 
 const UserTable = () => {
   return (
     <Provider>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<Spinner />}>
         <UserTableInner />
       </Suspense>
     </Provider>
@@ -27,22 +27,22 @@ const UserTable = () => {
 
 const UserTableInner = () => {
   const users = useAtomValue(filteredUsersAtom);
-  const loading = useAtomValue(loadingAtom);
+  const [isPending, startTransition] = useTransition();
 
   return (
     <Table
       aria-label="User table with some random data"
-      topContent={<UserTableTop />}
-      bottomContent={<UserTableBottom />}
+      topContent={<UserTableTop startTransition={startTransition} />}
+      bottomContent={<UserTableBottom startTransition={startTransition} />}
     >
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
       <TableBody
-        isLoading={loading}
+        items={users}
+        isLoading={isPending}
         loadingContent={<Spinner />}
-        emptyContent={'No users found'}
-        items={users ?? []}
+        emptyContent="No users found."
       >
         {(item) => (
           <TableRow key={item.id}>

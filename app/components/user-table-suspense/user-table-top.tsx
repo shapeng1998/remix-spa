@@ -5,66 +5,53 @@ import {
   SelectItem,
   type Selection,
 } from '@nextui-org/react';
-import { useSearchParams } from '@remix-run/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
+import { type FC, type TransitionStartFunction } from 'react';
 import {
+  defaultPage,
   userStatuses,
   type UserStatus,
-  defaultPage,
 } from './user-table.constants';
-import { loadingAtom, userFilterAtom, usersDataAtom } from './user-table.store';
+import { nameAtom, statusAtom, updateUsersDataAtom } from './user-table.store';
 
-const UserTableTop = () => {
-  const [, setSearchParams] = useSearchParams();
-  const userFilter = useAtomValue(userFilterAtom);
-  const refreshUsersData = useSetAtom(usersDataAtom);
-  const loading = useAtomValue(loadingAtom);
+interface UserTableTopProps {
+  startTransition: TransitionStartFunction;
+}
 
-  if (!userFilter) {
-    return null;
-  }
-
-  const { name, status } = userFilter;
+const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
+  const updateUsersData = useSetAtom(updateUsersDataAtom);
+  const setName = useSetAtom(nameAtom);
+  const setStatus = useSetAtom(statusAtom);
 
   const handleInputValueChange = (name: string) => {
-    setSearchParams(
-      (prev) => {
-        prev.set('page', String(defaultPage));
-        if (!name) prev.delete('name');
-        else prev.set('name', name);
-        return prev;
-      },
-      { replace: true },
-    );
+    setName(name);
+    startTransition(() => {
+      updateUsersData({ page: defaultPage, name });
+    });
   };
 
   const handleSelectionChange = (keys: Selection) => {
-    const selectedStatus = Array.from(keys)[0] as UserStatus | undefined;
-    setSearchParams(
-      (prev) => {
-        prev.set('page', String(defaultPage));
-        if (!selectedStatus) prev.delete('status');
-        else prev.set('status', selectedStatus);
-        return prev;
-      },
-      { replace: true },
-    );
+    const status = Array.from(keys)[0] as UserStatus;
+    setStatus(status);
+    startTransition(() => {
+      updateUsersData({ page: defaultPage, status });
+    });
+  };
+
+  const handleButtonPress = () => {
+    startTransition(() => {
+      updateUsersData();
+    });
   };
 
   return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-row gap-2">
-        <Input
-          size="sm"
-          label="Name"
-          value={name ?? ''}
-          onValueChange={handleInputValueChange}
-        />
+        <Input size="sm" label="Name" onValueChange={handleInputValueChange} />
         <Select
           size="sm"
           label="Status"
           selectionMode="single"
-          selectedKeys={new Set(status ? [status] : [])}
           onSelectionChange={handleSelectionChange}
         >
           {userStatuses.map((userStatus) => (
@@ -75,11 +62,7 @@ const UserTableTop = () => {
         </Select>
       </div>
 
-      <Button
-        color="primary"
-        isLoading={loading}
-        onPress={() => refreshUsersData()}
-      >
+      <Button color="primary" onPress={handleButtonPress}>
         Refresh
       </Button>
     </div>

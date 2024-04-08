@@ -4,53 +4,46 @@ import {
   SelectItem,
   type Selection,
 } from '@nextui-org/react';
-import { useSearchParams } from '@remix-run/react';
-import { useAtomValue } from 'jotai';
-import { defaultPage, limits } from './user-table.constants';
-import { totalCountAtom, userFilterAtom } from './user-table.store';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { type FC, type TransitionStartFunction } from 'react';
+import { limits } from './user-table.constants';
+import {
+  limitAtom,
+  pageAtom,
+  totalCountAtom,
+  updateUsersDataAtom,
+} from './user-table.store';
 
-const UserTableBottom = () => {
-  const [, setSearchParams] = useSearchParams();
+interface UserTableBottomProps {
+  startTransition: TransitionStartFunction;
+}
+
+const UserTableBottom: FC<UserTableBottomProps> = ({ startTransition }) => {
   const totalCount = useAtomValue(totalCountAtom);
-  const userFilter = useAtomValue(userFilterAtom);
-
-  if (!totalCount || !userFilter) {
-    return null;
-  }
-
-  const { page: currentPage, limit } = userFilter;
+  const [page, setPage] = useAtom(pageAtom);
+  const [limit, setLimit] = useAtom(limitAtom);
+  const updateUsersData = useSetAtom(updateUsersDataAtom);
 
   const handlePaginationChange = (page: number) => {
-    setSearchParams(
-      (prev) => {
-        prev.set('page', String(page));
-        return prev;
-      },
-      { replace: true },
-    );
+    setPage(page);
+    startTransition(() => {
+      updateUsersData({ page });
+    });
   };
 
   const handleSelectionChange = (keys: Selection) => {
-    const selectedLimit = Array.from(keys)[0] as string | undefined;
-    if (!selectedLimit) {
-      return;
-    }
-
-    setSearchParams(
-      (prev) => {
-        prev.set('limit', selectedLimit);
-        prev.set('page', String(defaultPage));
-        return prev;
-      },
-      { replace: true },
-    );
+    const limit = Number(Array.from(keys)[0]);
+    setLimit(limit);
+    startTransition(() => {
+      updateUsersData({ limit });
+    });
   };
 
   return (
     <div className="flex w-full flex-row items-center justify-between">
       <Pagination
         total={Math.ceil(totalCount / limit)}
-        page={currentPage}
+        page={page}
         onChange={handlePaginationChange}
       />
       <Select
