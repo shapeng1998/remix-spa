@@ -6,6 +6,7 @@ import {
   type UserFilter,
   type UserStatus,
 } from './user-table.constants';
+import { getDefaultUserFilterFromSearchParams } from './user-table.utils';
 
 export const nameAtom = atom<string | undefined>(undefined);
 export const statusAtom = atom<UserStatus | undefined>(undefined);
@@ -25,12 +26,7 @@ const usersDataAtom = atom(async (get) => {
 
   // get initial users data
   const searchParams = new URLSearchParams(window.location.search);
-  return getUsers({
-    page: Number(searchParams.get('page') ?? defaultPage),
-    limit: Number(searchParams.get('limit') ?? defaultLimit),
-    name: searchParams.get('name') ?? undefined,
-    status: (searchParams.get('status') as UserStatus) ?? undefined,
-  });
+  return getUsers(getDefaultUserFilterFromSearchParams(searchParams));
 });
 
 export const totalCountAtom = atom(async (get) => {
@@ -46,14 +42,11 @@ export const filteredUsersAtom = atom(async (get) => {
 export const updateUsersDataAtom = atom(
   null,
   (get, set, userFilter?: Partial<UserFilter>) => {
-    const defaultUserFilter: UserFilter = {
+    const usersDataPromise = getUsers({
       page: get(pageAtom),
       limit: get(limitAtom),
       name: get(nameAtom),
       status: get(statusAtom),
-    };
-    const usersDataPromise = getUsers({
-      ...defaultUserFilter,
       ...userFilter,
     });
     set(updatedUsersDataAtom, usersDataPromise);

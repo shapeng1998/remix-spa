@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
 import { useSearchParams } from '@remix-run/react';
+import { useEffect } from 'react';
 import { UserTable } from '~/components/user-table-suspense';
 import {
   defaultLimit,
   defaultPage,
-  type UserStatus,
 } from '~/components/user-table-suspense/user-table.constants';
+import { getDefaultUserFilterFromSearchParams } from '~/components/user-table-suspense/user-table.utils';
 
 const UserTablePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,12 +31,7 @@ const UserTablePage = () => {
 
   return (
     <div className="container mx-auto py-10">
-      <UserTable
-        limit={Number(searchParams.get('limit') ?? defaultLimit)}
-        page={Number(searchParams.get('page') ?? defaultPage)}
-        name={searchParams.get('name') ?? undefined}
-        status={(searchParams.get('status') as UserStatus) ?? undefined}
-      />
+      <UserTable {...getDefaultUserFilterFromSearchParams(searchParams)} />
     </div>
   );
 };
