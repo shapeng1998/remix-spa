@@ -5,11 +5,13 @@ import {
   SelectItem,
   type Selection,
 } from '@nextui-org/react';
+import { useDebouncedCallback } from '@react-hookz/web';
 import { useAtom, useSetAtom } from 'jotai';
 import { type FC, type TransitionStartFunction } from 'react';
 import {
   defaultPage,
   userStatuses,
+  type UserFilter,
   type UserStatus,
 } from './user-table.constants';
 import {
@@ -30,12 +32,21 @@ const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
   const [status, setStatus] = useAtom(statusAtom);
   const setPage = useSetAtom(pageAtom);
 
+  const debouncedUpdateUsersDataWithTransition = useDebouncedCallback(
+    (userFilter?: Partial<UserFilter>) => {
+      startTransition(() => {
+        updateUsersData(userFilter);
+      });
+    },
+    [],
+    300,
+  );
+
   const handleInputValueChange = (name: string) => {
     setName(name);
     setPage(defaultPage);
-    startTransition(() => {
-      updateUsersData({ page: defaultPage, name });
-    });
+
+    debouncedUpdateUsersDataWithTransition({ page: defaultPage, name });
 
     setSearchParamsWithoutNavigation((prev) => {
       if (name) {
