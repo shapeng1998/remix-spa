@@ -31,11 +31,11 @@ const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
   const setPage = useSetAtom(pageAtom);
 
   const handleInputValueChange = (name: string) => {
+    setName(name);
+    setPage(defaultPage);
     startTransition(() => {
       updateUsersData({ page: defaultPage, name });
     });
-    setName(name);
-    setPage(defaultPage);
 
     setSearchParamsWithoutNavigation((prev) => {
       if (name) {
@@ -50,11 +50,13 @@ const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
 
   const handleSelectionChange = (keys: Selection) => {
     const status = Array.from(keys)[0] as UserStatus;
+
+    setStatus(status);
+    setPage(defaultPage);
     startTransition(() => {
       updateUsersData({ page: defaultPage, status });
     });
-    setStatus(status);
-    setPage(defaultPage);
+
     setSearchParamsWithoutNavigation((prev) => {
       if (status) {
         prev.set('status', status);

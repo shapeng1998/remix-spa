@@ -30,10 +30,11 @@ const UserTableBottom: FC<UserTableBottomProps> = ({ startTransition }) => {
   }
 
   const handlePaginationChange = (page: number) => {
+    setPage(page);
     startTransition(() => {
       updateUsersData({ page });
     });
-    setPage(page);
+
     setSearchParamsWithoutNavigation((prev) => {
       prev.set('page', String(page));
       return prev;
@@ -42,10 +43,12 @@ const UserTableBottom: FC<UserTableBottomProps> = ({ startTransition }) => {
 
   const handleSelectionChange = (keys: Selection) => {
     const limit = Number(Array.from(keys)[0]);
+
+    setLimit(limit);
     startTransition(() => {
       updateUsersData({ limit });
     });
-    setLimit(limit);
+
     setSearchParamsWithoutNavigation((prev) => {
       prev.set('limit', String(limit));
       return prev;
