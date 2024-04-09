@@ -5,13 +5,13 @@ import {
   SelectItem,
   type Selection,
 } from '@nextui-org/react';
-import { useDebouncedCallback } from '@react-hookz/web';
 import { useAtom, useSetAtom } from 'jotai';
-import { type FC, type TransitionStartFunction } from 'react';
+import { debounce } from 'lodash-es';
+import { useMemo, type FC, type TransitionStartFunction } from 'react';
 import {
+  DEBOUNCE_WAIT_TIME_MS,
   defaultPage,
   userStatuses,
-  type UserFilter,
   type UserStatus,
 } from './user-table.constants';
 import {
@@ -32,14 +32,14 @@ const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
   const [status, setStatus] = useAtom(statusAtom);
   const setPage = useSetAtom(pageAtom);
 
-  const debouncedUpdateUsersDataWithTransition = useDebouncedCallback(
-    (userFilter?: Partial<UserFilter>) => {
-      startTransition(() => {
-        updateUsersData(userFilter);
-      });
-    },
-    [],
-    300,
+  const debouncedUpdateUsersDataWithTransition = useMemo(
+    () =>
+      debounce<typeof updateUsersData>((userFilter) => {
+        startTransition(() => {
+          updateUsersData(userFilter);
+        });
+      }, DEBOUNCE_WAIT_TIME_MS),
+    [startTransition, updateUsersData],
   );
 
   const handleInputValueChange = (name: string) => {

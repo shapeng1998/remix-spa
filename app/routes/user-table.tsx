@@ -10,8 +10,6 @@ import {
 const UserTablePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  console.info('render user table page');
-
   useEffect(() => {
     if (searchParams.has('page') && searchParams.has('limit')) {
       return;
