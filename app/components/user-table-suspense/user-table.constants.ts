@@ -26,8 +26,8 @@ export interface User {
 }
 
 export interface UserFilter {
-  name?: string;
-  status?: UserStatus;
+  name: string | undefined;
+  status: UserStatus | undefined;
   page: number;
   limit: number;
 }

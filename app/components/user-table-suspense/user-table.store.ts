@@ -17,14 +17,20 @@ type Users = Awaited<ReturnType<typeof getUsers>>;
 const updatedUsersDataAtom = atom<Promise<Users> | null>(null);
 
 const usersDataAtom = atom(async (get) => {
-  // get updated data
-  const updatedUsersData = await get(updatedUsersDataAtom);
+  // get updated users data
+  const updatedUsersData = get(updatedUsersDataAtom);
   if (updatedUsersData) {
     return updatedUsersData;
   }
 
-  // get initial data
-  return getUsers({ page: defaultPage, limit: defaultLimit });
+  // get initial users data
+  const searchParams = new URLSearchParams(window.location.search);
+  return getUsers({
+    page: Number(searchParams.get('page') ?? defaultPage),
+    limit: Number(searchParams.get('limit') ?? defaultLimit),
+    name: searchParams.get('name') ?? undefined,
+    status: (searchParams.get('status') as UserStatus) ?? undefined,
+  });
 });
 
 export const totalCountAtom = atom(async (get) => {

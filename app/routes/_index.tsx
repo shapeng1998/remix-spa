@@ -13,7 +13,7 @@ export default function Index() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/user-table-suspense');
+    navigate('/user-table');
   }, [navigate]);
 
   return null;

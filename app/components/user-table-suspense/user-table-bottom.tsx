@@ -13,6 +13,7 @@ import {
   totalCountAtom,
   updateUsersDataAtom,
 } from './user-table.store';
+import { setSearchParamsWithoutNavigation } from './user-table.utils';
 
 interface UserTableBottomProps {
   startTransition: TransitionStartFunction;
@@ -24,18 +25,30 @@ const UserTableBottom: FC<UserTableBottomProps> = ({ startTransition }) => {
   const [limit, setLimit] = useAtom(limitAtom);
   const updateUsersData = useSetAtom(updateUsersDataAtom);
 
+  if (!totalCount) {
+    return null;
+  }
+
   const handlePaginationChange = (page: number) => {
-    setPage(page);
     startTransition(() => {
       updateUsersData({ page });
+    });
+    setPage(page);
+    setSearchParamsWithoutNavigation((prev) => {
+      prev.set('page', String(page));
+      return prev;
     });
   };
 
   const handleSelectionChange = (keys: Selection) => {
     const limit = Number(Array.from(keys)[0]);
-    setLimit(limit);
     startTransition(() => {
       updateUsersData({ limit });
+    });
+    setLimit(limit);
+    setSearchParamsWithoutNavigation((prev) => {
+      prev.set('limit', String(limit));
+      return prev;
     });
   };
 

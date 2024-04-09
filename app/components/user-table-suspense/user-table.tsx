@@ -9,23 +9,39 @@ import {
   getKeyValue,
 } from '@nextui-org/react';
 import { Provider, useAtomValue } from 'jotai';
-import { Suspense, useTransition } from 'react';
+import { Suspense, useTransition, type FC } from 'react';
 import { UserTableBottom } from './user-table-bottom';
 import { UserTableTop } from './user-table-top';
-import { columns } from './user-table.constants';
-import { filteredUsersAtom } from './user-table.store';
+import { columns, type UserFilter } from './user-table.constants';
+import {
+  filteredUsersAtom,
+  limitAtom,
+  nameAtom,
+  pageAtom,
+  statusAtom,
+} from './user-table.store';
+import { useHydrateAtoms } from 'jotai/utils';
 
-const UserTable = () => {
+type UserTableProps = Readonly<UserFilter>;
+
+const UserTable: FC<UserTableProps> = (props) => {
   return (
     <Provider>
       <Suspense fallback={<Spinner />}>
-        <UserTableInner />
+        <UserTableInner {...props} />
       </Suspense>
     </Provider>
   );
 };
 
-const UserTableInner = () => {
+const UserTableInner: FC<UserTableProps> = ({ limit, name, page, status }) => {
+  useHydrateAtoms([
+    [limitAtom, limit],
+    [nameAtom, name],
+    [pageAtom, page],
+    [statusAtom, status],
+  ]);
+
   const users = useAtomValue(filteredUsersAtom);
   const [isPending, startTransition] = useTransition();
 

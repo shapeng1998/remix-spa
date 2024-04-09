@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 import { useSearchParams } from '@remix-run/react';
-import { UserTable } from '~/components/user-table-effect';
+import { UserTable } from '~/components/user-table-suspense';
 import {
   defaultLimit,
   defaultPage,
   type UserStatus,
-} from '~/components/user-table/user-table.constants';
+} from '~/components/user-table-suspense/user-table.constants';
 
 const UserTablePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  console.info('render user table page');
 
   useEffect(() => {
     if (searchParams.has('page') && searchParams.has('limit')) {
