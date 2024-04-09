@@ -4,10 +4,19 @@ import { BASE_URL, type User, type UserFilter } from './user-table.constants';
 /**
  * Get all users from api
  */
-export const getUsers = async ({ name, status, limit, page }: UserFilter) => {
+export const getUsers = async ({
+  name,
+  status,
+  limit,
+  page,
+}: Partial<UserFilter>) => {
   const searchParams = new URLSearchParams();
-  searchParams.set('_page', String(page));
-  searchParams.set('_limit', String(limit));
+  if (page) {
+    searchParams.set('_page', String(page));
+  }
+  if (limit) {
+    searchParams.set('_limit', String(limit));
+  }
   if (name) {
     searchParams.set('name_like', name);
   }

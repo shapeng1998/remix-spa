@@ -1,11 +1,11 @@
 import { useSearchParams } from '@remix-run/react';
 import { useEffect } from 'react';
-import { UserTable } from '~/components/user-table-suspense';
+import { UserTable } from '~/components/user-table';
 import {
   defaultLimit,
   defaultPage,
-} from '~/components/user-table-suspense/user-table.constants';
-import { getDefaultUserFilterFromSearchParams } from '~/components/user-table-suspense/user-table.utils';
+} from '~/components/user-table/user-table.constants';
+import { getDefaultUserFilterFromSearchParams } from '~/components/user-table/user-table.utils';
 
 const UserTablePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

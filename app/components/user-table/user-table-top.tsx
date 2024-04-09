@@ -5,50 +5,84 @@ import {
   SelectItem,
   type Selection,
 } from '@nextui-org/react';
-import { useSearchParams } from '@remix-run/react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
+import { debounce } from 'lodash-es';
+import { useMemo, type FC, type TransitionStartFunction } from 'react';
 import {
+  DEBOUNCE_WAIT_TIME_MS,
+  defaultPage,
   userStatuses,
   type UserStatus,
-  defaultPage,
 } from './user-table.constants';
-import { loadingAtom, userFilterAtom, usersDataAtom } from './user-table.store';
+import {
+  nameAtom,
+  pageAtom,
+  statusAtom,
+  updateUsersDataAtom,
+} from './user-table.store';
+import { setSearchParamsWithoutNavigation } from './user-table.utils';
 
-const UserTableTop = () => {
-  const [, setSearchParams] = useSearchParams();
-  const userFilter = useAtomValue(userFilterAtom);
-  const refreshUsersData = useSetAtom(usersDataAtom);
-  const loading = useAtomValue(loadingAtom);
+interface UserTableTopProps {
+  startTransition: TransitionStartFunction;
+}
 
-  if (!userFilter) {
-    return null;
-  }
+const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
+  const updateUsersData = useSetAtom(updateUsersDataAtom);
+  const [name, setName] = useAtom(nameAtom);
+  const [status, setStatus] = useAtom(statusAtom);
+  const setPage = useSetAtom(pageAtom);
 
-  const { name, status } = userFilter;
+  const debouncedUpdateUsersDataWithTransition = useMemo(
+    () =>
+      debounce<typeof updateUsersData>((userFilter) => {
+        startTransition(() => {
+          updateUsersData(userFilter);
+        });
+      }, DEBOUNCE_WAIT_TIME_MS),
+    [startTransition, updateUsersData],
+  );
 
   const handleInputValueChange = (name: string) => {
-    setSearchParams(
-      (prev) => {
-        prev.set('page', String(defaultPage));
-        if (!name) prev.delete('name');
-        else prev.set('name', name);
-        return prev;
-      },
-      { replace: true },
-    );
+    setName(name);
+    setPage(defaultPage);
+
+    debouncedUpdateUsersDataWithTransition({ page: defaultPage, name });
+
+    setSearchParamsWithoutNavigation((prev) => {
+      if (name) {
+        prev.set('name', name);
+      } else {
+        prev.delete('name');
+      }
+      prev.set('page', String(defaultPage));
+      return prev;
+    });
   };
 
   const handleSelectionChange = (keys: Selection) => {
-    const selectedStatus = Array.from(keys)[0] as UserStatus | undefined;
-    setSearchParams(
-      (prev) => {
-        prev.set('page', String(defaultPage));
-        if (!selectedStatus) prev.delete('status');
-        else prev.set('status', selectedStatus);
-        return prev;
-      },
-      { replace: true },
-    );
+    const status = Array.from(keys)[0] as UserStatus;
+
+    setStatus(status);
+    setPage(defaultPage);
+    startTransition(() => {
+      updateUsersData({ page: defaultPage, status });
+    });
+
+    setSearchParamsWithoutNavigation((prev) => {
+      if (status) {
+        prev.set('status', status);
+      } else {
+        prev.delete('status');
+      }
+      prev.set('page', String(defaultPage));
+      return prev;
+    });
+  };
+
+  const handleButtonPress = () => {
+    startTransition(() => {
+      updateUsersData();
+    });
   };
 
   return (
@@ -60,6 +94,7 @@ const UserTableTop = () => {
           value={name ?? ''}
           onValueChange={handleInputValueChange}
         />
+
         <Select
           size="sm"
           label="Status"
@@ -75,11 +110,7 @@ const UserTableTop = () => {
         </Select>
       </div>
 
-      <Button
-        color="primary"
-        isLoading={loading}
-        onPress={() => refreshUsersData()}
-      >
+      <Button color="primary" onPress={handleButtonPress}>
         Refresh
       </Button>
     </div>

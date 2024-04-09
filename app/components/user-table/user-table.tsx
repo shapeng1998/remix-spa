@@ -8,54 +8,57 @@ import {
   TableRow,
   getKeyValue,
 } from '@nextui-org/react';
-import { Provider, useAtomValue, useSetAtom } from 'jotai';
-import { Suspense, useEffect, type FC } from 'react';
+import { Provider, useAtomValue } from 'jotai';
+import { Suspense, useTransition, type FC } from 'react';
 import { UserTableBottom } from './user-table-bottom';
 import { UserTableTop } from './user-table-top';
 import { columns, type UserFilter } from './user-table.constants';
 import {
   filteredUsersAtom,
-  loadingAtom,
-  userFilterAtom,
+  limitAtom,
+  nameAtom,
+  pageAtom,
+  statusAtom,
 } from './user-table.store';
+import { useHydrateAtoms } from 'jotai/utils';
 
 type UserTableProps = Readonly<UserFilter>;
 
 const UserTable: FC<UserTableProps> = (props) => {
   return (
     <Provider>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<Spinner />}>
         <UserTableInner {...props} />
       </Suspense>
     </Provider>
   );
 };
 
-const UserTableInner: FC<UserTableProps> = ({ page, limit, name, status }) => {
-  const setUserFilter = useSetAtom(userFilterAtom);
-
-  useEffect(() => {
-    setUserFilter({ page, limit, name, status });
-    return () => setUserFilter(null);
-  }, [limit, name, page, status, setUserFilter]);
+const UserTableInner: FC<UserTableProps> = ({ limit, name, page, status }) => {
+  useHydrateAtoms([
+    [limitAtom, limit],
+    [nameAtom, name],
+    [pageAtom, page],
+    [statusAtom, status],
+  ]);
 
   const users = useAtomValue(filteredUsersAtom);
-  const loading = useAtomValue(loadingAtom);
+  const [isPending, startTransition] = useTransition();
 
   return (
     <Table
       aria-label="User table with some random data"
-      topContent={<UserTableTop />}
-      bottomContent={<UserTableBottom />}
+      topContent={<UserTableTop startTransition={startTransition} />}
+      bottomContent={<UserTableBottom startTransition={startTransition} />}
     >
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
       <TableBody
-        isLoading={loading}
+        items={users}
+        isLoading={isPending}
         loadingContent={<Spinner />}
-        emptyContent={'No users found'}
-        items={users ?? []}
+        emptyContent="No users found."
       >
         {(item) => (
           <TableRow key={item.id}>
