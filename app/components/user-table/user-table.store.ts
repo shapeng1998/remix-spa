@@ -17,7 +17,7 @@ type Users = Awaited<ReturnType<typeof getUsers>>;
 
 const updatedUsersDataAtom = atom<Promise<Users> | null>(null);
 
-const usersDataAtom = atom(async (get) => {
+const usersDataAtom = atom((get) => {
   // get updated users data
   const updatedUsersData = get(updatedUsersDataAtom);
   if (updatedUsersData) {

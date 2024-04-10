@@ -25,15 +25,16 @@ export const getUsers = async ({
   }
 
   const res = await fetch(BASE_URL + '/users?' + searchParams.toString());
+  invariant(res.ok, 'Expected http request to be ok');
+
+  const rawUsers: User[] = await res.json();
+  const users = rawUsers.map((user) => ({ ...user, age: Number(user.age) }));
 
   const totalCount = res.headers.get('X-Total-Count');
   invariant(
     typeof totalCount === 'string',
     'Expected totalCount to be a string',
   );
-
-  const rawUsers: User[] = await res.json();
-  const users = rawUsers.map((user) => ({ ...user, age: Number(user.age) }));
 
   return {
     users,

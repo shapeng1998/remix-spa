@@ -26,7 +26,7 @@ interface UserTableTopProps {
   startTransition: TransitionStartFunction;
 }
 
-const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
+export const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
   const updateUsersData = useSetAtom(updateUsersDataAtom);
   const [name, setName] = useAtom(nameAtom);
   const [status, setStatus] = useAtom(statusAtom);
@@ -116,5 +116,3 @@ const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
     </div>
   );
 };
-
-export { UserTableTop };

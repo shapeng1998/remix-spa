@@ -19,7 +19,9 @@ interface UserTableBottomProps {
   startTransition: TransitionStartFunction;
 }
 
-const UserTableBottom: FC<UserTableBottomProps> = ({ startTransition }) => {
+export const UserTableBottom: FC<UserTableBottomProps> = ({
+  startTransition,
+}) => {
   const totalCount = useAtomValue(totalCountAtom);
   const [page, setPage] = useAtom(pageAtom);
   const [limit, setLimit] = useAtom(limitAtom);
@@ -80,5 +82,3 @@ const UserTableBottom: FC<UserTableBottomProps> = ({ startTransition }) => {
     </div>
   );
 };
-
-export { UserTableBottom };

@@ -1,4 +1,5 @@
 import {
+  Link,
   Spinner,
   Table,
   TableBody,
@@ -21,16 +22,33 @@ import {
   statusAtom,
 } from './user-table.store';
 import { useHydrateAtoms } from 'jotai/utils';
+import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 
 type UserTableProps = Readonly<UserFilter>;
 
-const UserTable: FC<UserTableProps> = (props) => {
+export const UserTable: FC<UserTableProps> = (props) => {
   return (
     <Provider>
-      <Suspense fallback={<Spinner />}>
-        <UserTableInner {...props} />
-      </Suspense>
+      <ErrorBoundary FallbackComponent={UserTableErrorFallback}>
+        <Suspense fallback={<Spinner />}>
+          <UserTableInner {...props} />
+        </Suspense>
+      </ErrorBoundary>
     </Provider>
+  );
+};
+
+const UserTableErrorFallback: FC<FallbackProps> = ({ error }) => {
+  return (
+    <div role="alert" className="rounded bg-warning-50 p-3">
+      <p>
+        There was an error in loading the user table.{' '}
+        <Link color="danger" underline="always" href="/">
+          Reload this page.
+        </Link>
+      </p>
+      <p className="text-danger-500">{error?.message}</p>
+    </div>
   );
 };
 
@@ -71,5 +89,3 @@ const UserTableInner: FC<UserTableProps> = ({ limit, name, page, status }) => {
     </Table>
   );
 };
-
-export { UserTable };
