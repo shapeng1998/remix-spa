@@ -6,7 +6,7 @@ import {
 } from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { type FC, type TransitionStartFunction } from 'react';
-import { limits } from './user-table.constants';
+import { defaultPage, limits } from './user-table.constants';
 import {
   limitAtom,
   pageAtom,
@@ -47,12 +47,14 @@ export const UserTableBottom: FC<UserTableBottomProps> = ({
     const limit = Number(Array.from(keys)[0]);
 
     setLimit(limit);
+    setPage(defaultPage);
     startTransition(() => {
-      updateUsersData({ limit });
+      updateUsersData({ limit, page: defaultPage });
     });
 
     setSearchParamsWithoutNavigation((prev) => {
       prev.set('limit', String(limit));
+      prev.set('page', String(defaultPage));
       return prev;
     });
   };
