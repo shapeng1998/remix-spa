@@ -1,21 +1,26 @@
-import { useSearchParams } from '@remix-run/react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { UserTable } from '~/components/user-table';
 import {
   defaultLimit,
   defaultPage,
 } from '~/components/user-table/user-table.constants';
-import { getDefaultUserFilterFromSearchParams } from '~/components/user-table/user-table.utils';
+import {
+  getDefaultUserFilterFromSearchParams,
+  setSearchParamsWithoutNavigation,
+} from '~/components/user-table/user-table.utils';
 
 const UserTablePage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useMemo(
+    () => new URLSearchParams(window.location.search),
+    [],
+  );
 
   useEffect(() => {
     if (searchParams.has('page') && searchParams.has('limit')) {
       return;
     }
 
-    setSearchParams(
+    setSearchParamsWithoutNavigation(
       (prev) => {
         if (!prev.has('page')) {
           prev.set('page', String(defaultPage));
@@ -27,7 +32,7 @@ const UserTablePage = () => {
       },
       { replace: true },
     );
-  }, [searchParams, setSearchParams]);
+  }, [searchParams]);
 
   return (
     <div className="container mx-auto py-10">
