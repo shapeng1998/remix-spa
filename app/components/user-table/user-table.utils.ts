@@ -7,10 +7,9 @@ import {
 } from './user-table.constants';
 
 type SetURLSearchParams = ReturnType<typeof useSearchParams>[1];
+type NextInit = Parameters<SetURLSearchParams>[0];
 
-export const setSearchParamsWithoutNavigation: SetURLSearchParams = (
-  nextInit,
-) => {
+export const setSearchParamsWithoutNavigation = (nextInit?: NextInit) => {
   const currentSearchParams = new URLSearchParams(window.location.search);
   const newSearchParams = createSearchParams(
     typeof nextInit === 'function' ? nextInit(currentSearchParams) : nextInit,

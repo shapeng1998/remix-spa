@@ -20,18 +20,15 @@ const UserTablePage = () => {
       return;
     }
 
-    setSearchParamsWithoutNavigation(
-      (prev) => {
-        if (!prev.has('page')) {
-          prev.set('page', String(defaultPage));
-        }
-        if (!prev.has('limit')) {
-          prev.set('limit', String(defaultLimit));
-        }
-        return prev;
-      },
-      { replace: true },
-    );
+    setSearchParamsWithoutNavigation((prev) => {
+      if (!prev.has('page')) {
+        prev.set('page', String(defaultPage));
+      }
+      if (!prev.has('limit')) {
+        prev.set('limit', String(defaultLimit));
+      }
+      return prev;
+    });
   }, [searchParams]);
 
   return (
