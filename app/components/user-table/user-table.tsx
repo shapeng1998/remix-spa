@@ -66,8 +66,15 @@ const UserTableInner: FC<UserTableProps> = ({ limit, name, page, status }) => {
   return (
     <Table
       aria-label="User table with some random data"
-      topContent={<UserTableTop startTransition={startTransition} />}
-      bottomContent={<UserTableBottom startTransition={startTransition} />}
+      topContent={
+        <UserTableTop isPending={isPending} startTransition={startTransition} />
+      }
+      bottomContent={
+        <UserTableBottom
+          isPending={isPending}
+          startTransition={startTransition}
+        />
+      }
     >
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}

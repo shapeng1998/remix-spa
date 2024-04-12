@@ -16,10 +16,12 @@ import {
 import { setSearchParamsWithoutNavigation } from './user-table.utils';
 
 interface UserTableBottomProps {
+  isPending: boolean;
   startTransition: TransitionStartFunction;
 }
 
 export const UserTableBottom: FC<UserTableBottomProps> = ({
+  isPending,
   startTransition,
 }) => {
   const totalCount = useAtomValue(totalCountAtom);
@@ -65,6 +67,7 @@ export const UserTableBottom: FC<UserTableBottomProps> = ({
         total={Math.ceil(totalCount / limit)}
         page={page}
         onChange={handlePaginationChange}
+        isDisabled={isPending}
       />
       <Select
         size="sm"

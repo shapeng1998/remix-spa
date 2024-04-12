@@ -23,10 +23,14 @@ import {
 import { setSearchParamsWithoutNavigation } from './user-table.utils';
 
 interface UserTableTopProps {
+  isPending: boolean;
   startTransition: TransitionStartFunction;
 }
 
-export const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
+export const UserTableTop: FC<UserTableTopProps> = ({
+  isPending,
+  startTransition,
+}) => {
   const updateUsersData = useSetAtom(updateUsersDataAtom);
   const [name, setName] = useAtom(nameAtom);
   const [status, setStatus] = useAtom(statusAtom);
@@ -110,7 +114,11 @@ export const UserTableTop: FC<UserTableTopProps> = ({ startTransition }) => {
         </Select>
       </div>
 
-      <Button color="primary" onPress={handleButtonPress}>
+      <Button
+        color="primary"
+        isDisabled={isPending}
+        onPress={handleButtonPress}
+      >
         Refresh
       </Button>
     </div>
