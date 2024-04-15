@@ -1,6 +1,6 @@
 export const BASE_URL = 'http://localhost:3000';
 
-export const DEBOUNCE_WAIT_TIME_MS = 300;
+export const DEBOUNCE_DELAY_MS = 300;
 
 export const defaultPage = 1;
 export const defaultLimit = 10;

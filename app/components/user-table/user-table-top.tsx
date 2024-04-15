@@ -5,11 +5,11 @@ import {
   SelectItem,
   type Selection,
 } from '@nextui-org/react';
+import { useDebouncedEffect } from '@react-hookz/web';
 import { useAtom, useSetAtom } from 'jotai';
-import { debounce } from 'lodash-es';
-import { useMemo, type FC, type TransitionStartFunction } from 'react';
+import { type FC, type TransitionStartFunction } from 'react';
 import {
-  DEBOUNCE_WAIT_TIME_MS,
+  DEBOUNCE_DELAY_MS,
   defaultPage,
   userStatuses,
   type UserStatus,
@@ -36,21 +36,22 @@ export const UserTableTop: FC<UserTableTopProps> = ({
   const [status, setStatus] = useAtom(statusAtom);
   const setPage = useSetAtom(pageAtom);
 
-  const debouncedUpdateUsersDataWithTransition = useMemo(
-    () =>
-      debounce<typeof updateUsersData>((userFilter) => {
-        startTransition(() => {
-          updateUsersData(userFilter);
-        });
-      }, DEBOUNCE_WAIT_TIME_MS),
-    [startTransition, updateUsersData],
+  useDebouncedEffect(
+    () => {
+      if (name === undefined) {
+        return;
+      }
+      startTransition(() => {
+        updateUsersData({ page: defaultPage, name });
+      });
+    },
+    [name],
+    DEBOUNCE_DELAY_MS,
   );
 
   const handleInputValueChange = (name: string) => {
     setName(name);
     setPage(defaultPage);
-
-    debouncedUpdateUsersDataWithTransition({ page: defaultPage, name });
 
     setSearchParamsWithoutNavigation((prev) => {
       if (name) {
