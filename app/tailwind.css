@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  ::highlight(highlight-words) {
+    @apply underline decoration-dotted;
+  }
+}
