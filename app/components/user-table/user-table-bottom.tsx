@@ -36,7 +36,7 @@ export const UserTableBottom: FC<UserTableBottomProps> = ({
   const handlePaginationChange = (page: number) => {
     setPage(page);
     startTransition(() => {
-      updateUsersData({ page });
+      updateUsersData();
     });
 
     setSearchParamsWithoutNavigation((prev) => {
@@ -51,7 +51,7 @@ export const UserTableBottom: FC<UserTableBottomProps> = ({
     setLimit(limit);
     setPage(defaultPage);
     startTransition(() => {
-      updateUsersData({ limit, page: defaultPage });
+      updateUsersData();
     });
 
     setSearchParamsWithoutNavigation((prev) => {

@@ -42,7 +42,7 @@ export const UserTableTop: FC<UserTableTopProps> = ({
         return;
       }
       startTransition(() => {
-        updateUsersData({ page: defaultPage, name });
+        updateUsersData();
       });
     },
     [name],
@@ -70,7 +70,7 @@ export const UserTableTop: FC<UserTableTopProps> = ({
     setStatus(status);
     setPage(defaultPage);
     startTransition(() => {
-      updateUsersData({ page: defaultPage, status });
+      updateUsersData();
     });
 
     setSearchParamsWithoutNavigation((prev) => {
